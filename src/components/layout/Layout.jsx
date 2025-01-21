@@ -18,7 +18,7 @@ function Layout() {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 2,
+            p: 1,
             transition: "margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
             marginLeft: 0,
             width: "100%",
@@ -27,7 +27,6 @@ function Layout() {
           <GridLayout />
         </Box>
       </Box>
-      <FullscreenWidget />
     </Box>
   );
 }

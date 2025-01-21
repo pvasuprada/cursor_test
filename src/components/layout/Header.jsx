@@ -41,93 +41,119 @@ function Header() {
     setAnchorEl(null);
   };
 
-  const handleSidebarToggle = (content) => {
-    dispatch(toggleSidebar(content));
-  };
-
-  const handleThemeToggle = () => {
-    dispatch(toggleTheme());
-  };
-
   return (
-    <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Minerva Dashboard
-          </Typography>
+    <AppBar
+      position="static"
+      elevation={0}
+      sx={{
+        borderBottom: 1,
+        borderColor: "divider",
+      }}
+    >
+      <Toolbar
+        sx={{
+          minHeight: "40px !important",
+          px: "12px !important",
+        }}
+      >
+        <Typography
+          variant="subtitle1"
+          component="div"
+          sx={{
+            flexGrow: 1,
+            fontSize: "1rem",
+            fontWeight: 500,
+          }}
+        >
+          Minerva Dashboard
+        </Typography>
+        <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
           <Tooltip
             title={`Switch to ${themeMode === "light" ? "dark" : "light"} mode`}
           >
             <IconButton
               color="inherit"
-              onClick={handleThemeToggle}
-              sx={{ mr: 1 }}
+              onClick={() => dispatch(toggleTheme())}
+              size="small"
             >
-              {themeMode === "light" ? <DarkMode /> : <LightMode />}
+              {themeMode === "light" ? (
+                <DarkMode sx={{ fontSize: 20 }} />
+              ) : (
+                <LightMode sx={{ fontSize: 20 }} />
+              )}
             </IconButton>
           </Tooltip>
-          <IconButton color="inherit">
-            <Settings />
+          <IconButton color="inherit" size="small">
+            <Settings sx={{ fontSize: 20 }} />
           </IconButton>
-          <IconButton color="inherit">
-            <Info />
+          <IconButton color="inherit" size="small">
+            <Info sx={{ fontSize: 20 }} />
           </IconButton>
-          <IconButton color="inherit" onClick={handleProfileMenuOpen}>
-            <AccountCircle />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleProfileMenuClose}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          <IconButton
+            color="inherit"
+            onClick={handleProfileMenuOpen}
+            size="small"
           >
-            <MenuItem onClick={handleProfileMenuClose}>
-              <Person sx={{ mr: 1 }} /> Profile
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuClose}>
-              <Security sx={{ mr: 1 }} /> Security
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleProfileMenuClose}>
-              <ExitToApp sx={{ mr: 1 }} /> Logout
-            </MenuItem>
-          </Menu>
-        </Toolbar>
-        <Box
+            <AccountCircle sx={{ fontSize: 20 }} />
+          </IconButton>
+        </Box>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleProfileMenuClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem onClick={handleProfileMenuClose}>
+            <Person sx={{ mr: 1, fontSize: 18 }} /> Profile
+          </MenuItem>
+          <MenuItem onClick={handleProfileMenuClose}>
+            <Security sx={{ mr: 1, fontSize: 18 }} /> Security
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleProfileMenuClose}>
+            <ExitToApp sx={{ mr: 1, fontSize: 18 }} /> Logout
+          </MenuItem>
+        </Menu>
+      </Toolbar>
+      <Box
+        sx={{
+          borderTop: 1,
+          borderColor: "divider",
+          bgcolor: "background.paper",
+        }}
+      >
+        <Toolbar
+          variant="dense"
           sx={{
-            bgcolor: "background.paper",
-            borderBottom: 1,
-            borderColor: "divider",
+            minHeight: "36px !important",
+            px: "12px !important",
           }}
         >
-          <Toolbar variant="dense">
-            <Button
-              startIcon={<Dashboard />}
-              sx={{ fontWeight: "bold" }}
-              onClick={() => handleSidebarToggle("dashboards")}
-            >
-              Dashboards
-            </Button>
-            <Button
-              startIcon={<FilterList />}
-              sx={{ fontWeight: "bold" }}
-              onClick={() => handleSidebarToggle("filters")}
-            >
-              Filters
-            </Button>
-            <Button
-              startIcon={<Insights />}
-              sx={{ fontWeight: "bold" }}
-              onClick={() => handleSidebarToggle("insights")}
-            >
-              Insights
-            </Button>
-          </Toolbar>
-        </Box>
-      </AppBar>
-    </>
+          <Button
+            startIcon={<Dashboard sx={{ fontSize: 18 }} />}
+            onClick={() => dispatch(toggleSidebar("dashboards"))}
+            size="small"
+          >
+            Dashboards
+          </Button>
+          <Button
+            startIcon={<FilterList sx={{ fontSize: 18 }} />}
+            onClick={() => dispatch(toggleSidebar("filters"))}
+            size="small"
+          >
+            Filters
+          </Button>
+          <Button
+            startIcon={<Insights sx={{ fontSize: 18 }} />}
+            onClick={() => dispatch(toggleSidebar("insights"))}
+            size="small"
+          >
+            Insights
+          </Button>
+        </Toolbar>
+      </Box>
+    </AppBar>
   );
 }
 

@@ -1,29 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import BaseWidget from "./BaseWidget";
 import {
   Box,
   TextField,
-  Button,
+  IconButton,
   List,
   ListItem,
   Paper,
   Typography,
-  IconButton,
   InputAdornment,
+  Avatar,
   useTheme,
+  Divider,
 } from "@mui/material";
-import { Send } from "@mui/icons-material";
+import { Send, SmartToy } from "@mui/icons-material";
 
-function NetworkGenieWidget({ widget }) {
+function NetworkGenieWidget({ widget, isFullscreen }) {
   const theme = useTheme();
   const [messages, setMessages] = useState([
     {
       type: "bot",
-      text: "Hi! I can help you with:",
+      text: "Hello! I am Network Genie. How can I assist you today?",
     },
     {
       type: "bot",
-      text: "• Network performance analysis\n• Coverage issues\n• Traffic patterns",
+      text: "I can help you with:\n• Network performance analysis\n• Coverage issues\n• Traffic patterns\n• Network optimization",
     },
   ]);
   const [input, setInput] = useState("");
@@ -35,10 +36,20 @@ function NetworkGenieWidget({ widget }) {
         { type: "user", text: input },
         {
           type: "bot",
-          text: "I understand your question. Let me help you with that.",
+          text:
+            "I understand your question about " +
+            input +
+            ". Let me analyze that for you.",
         },
       ]);
       setInput("");
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
     }
   };
 
@@ -49,10 +60,9 @@ function NetworkGenieWidget({ widget }) {
           display: "flex",
           flexDirection: "column",
           height: "100%",
-          maxHeight: "calc(100vh - 200px)", // Adjust based on your layout
+          maxHeight: isFullscreen ? "calc(80vh - 100px)" : "calc(100% - 20px)",
         }}
       >
-        {/* Messages Area */}
         <Box
           sx={{
             flex: 1,
@@ -72,8 +82,21 @@ function NetworkGenieWidget({ widget }) {
                   justifyContent:
                     message.type === "user" ? "flex-end" : "flex-start",
                   mb: 1,
+                  alignItems: "flex-start",
                 }}
               >
+                {message.type === "bot" && (
+                  <Avatar
+                    sx={{
+                      bgcolor: "primary.main",
+                      width: 28,
+                      height: 28,
+                      mr: 1,
+                    }}
+                  >
+                    <SmartToy sx={{ fontSize: 16 }} />
+                  </Avatar>
+                )}
                 <Paper
                   elevation={1}
                   sx={{
@@ -96,8 +119,11 @@ function NetworkGenieWidget({ widget }) {
                   }}
                 >
                   <Typography
-                    variant="body1"
-                    style={{ whiteSpace: "pre-line" }}
+                    variant="body2"
+                    sx={{
+                      whiteSpace: "pre-line",
+                      fontSize: isFullscreen ? "1rem" : "0.875rem",
+                    }}
                   >
                     {message.text}
                   </Typography>
@@ -107,16 +133,19 @@ function NetworkGenieWidget({ widget }) {
           </List>
         </Box>
 
-        {/* Input Area */}
+        <Divider />
+
         <Box sx={{ p: 1, backgroundColor: "background.paper" }}>
           <TextField
             fullWidth
+            multiline
+            maxRows={3}
             variant="outlined"
             placeholder="Ask Network Genie..."
             size="small"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSend()}
+            onKeyPress={handleKeyPress}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -124,8 +153,9 @@ function NetworkGenieWidget({ widget }) {
                     onClick={handleSend}
                     color="primary"
                     disabled={!input.trim()}
+                    size="small"
                   >
-                    <Send />
+                    <Send fontSize="small" />
                   </IconButton>
                 </InputAdornment>
               ),
